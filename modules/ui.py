@@ -1,6 +1,6 @@
-﻿import sys
-from PySide6.QtWidgets import QFileDialog, QMainWindow, QApplication, QPushButton, QWidget
-from PySide6.QtCore import QUrl, Qt, QPoint
+import sys
+from PySide6.QtWidgets import QFileDialog, QMainWindow, QApplication
+from PySide6.QtCore import QUrl, Qt
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from ui import Ui_MainWindow
