@@ -43,7 +43,12 @@ class Ui_Form(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.title = QLabel(self.framebar)
+        font = QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        self.title.setFont(font)
         self.title.setObjectName(u"title")
+        self.title.setStyleSheet(u"color: #ffffff;")
 
         self.horizontalLayout_2.addWidget(self.title)
 

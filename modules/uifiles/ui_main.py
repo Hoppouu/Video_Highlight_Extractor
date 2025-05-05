@@ -20,6 +20,7 @@ from PySide6.QtWidgets import (QAbstractSpinBox, QApplication, QCheckBox, QDoubl
     QLayout, QMainWindow, QPushButton, QScrollArea,
     QSizePolicy, QSlider, QSpacerItem, QSpinBox,
     QTextBrowser, QVBoxLayout, QWidget)
+from PySide6.QtMultimediaWidgets import QVideoWidget
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -138,7 +139,7 @@ class Ui_MainWindow(object):
         self.mainFrame.setSpacing(0)
         self.mainFrame.setObjectName(u"mainFrame")
         self.mainFrame.setContentsMargins(7, 5, 7, 10)
-        self.videoPlayer = QWidget(self.centralwidget)
+        self.videoPlayer = QVideoWidget(self.centralwidget)
         self.videoPlayer.setObjectName(u"videoPlayer")
         self.videoPlayer.setStyleSheet(u"border: 3px dashed #414141;")
 
