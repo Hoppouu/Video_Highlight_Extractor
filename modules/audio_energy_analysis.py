@@ -1,24 +1,20 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# 고에너지 구간 분석 (librosa 기반 - MP3 지원)
-# 이 스크립트는 오디오 파일(MP3, WAV 등)의 에너지 변화를 분석하고
-# 고에너지 구간을 출력 및 시각화합니다.
-
-# 필요한 패키지 설치
-# pip install librosa matplotlib numpy
-
 import librosa
 import numpy as np
 import matplotlib.pyplot as plt
 
+import os
+print(os.getcwd())
+
 # 오디오 로딩 (MP3, WAV 모두 지원)
-file_path = "sample_audio.mp3"  # 또는 "sample_audio.wav"
+# file_path = "./audio.mp3"  # 또는 "sample_audio.wav"
+
+file_path = os.path.join(os.path.dirname(__file__), "audio.mp3")
 signal, sample_rate = librosa.load(file_path, sr=None)
 
+
 # Short-term feature 추출
-win_size = 0.05     # 50ms
-step_size = 0.025   # 25ms
+win_size = 0.5     # 500ms
+step_size = 0.25   # 250ms
 win_samples = int(win_size * sample_rate)
 step_samples = int(step_size * sample_rate)
 
