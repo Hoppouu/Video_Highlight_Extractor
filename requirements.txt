@@ -2,3 +2,4 @@ yt_dlp
 ffmpeg
 torch
 openai-whisper
+openai
