@@ -24,3 +24,6 @@ def set_directory(dir):
     directory = dir
     
 directory = "./"
+
+str = input()
+download_sound_with_ytdlp(str)
