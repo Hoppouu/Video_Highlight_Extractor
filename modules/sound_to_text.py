@@ -1,6 +1,7 @@
 import whisper
 import datetime
 import os
+import argparse
 
 def format_srt_timestamp(seconds: float) -> str:
     td = datetime.timedelta(seconds=seconds)
@@ -35,12 +36,15 @@ def transcribe_to_srt(audio_path, model_size="base"):
 
     print(f"SRT 자막 저장 완료: {srt_path}")
 
-if __name__ == "__main__":
-    import argparse
+def start(file_name, model='base'):
+    print("Transcribe to text file")
+    transcribe_to_srt(file_name, model)
+    print("Complete to transcribe to text file")
 
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Whisper로 SRT 자막 생성기")
     parser.add_argument("audio_file", help="자막을 추출할 오디오 파일 경로")
     parser.add_argument("--model", default="base", help="모델 크기 (tiny, base, small, medium, large)")
     args = parser.parse_args()
-
-    transcribe_to_srt(args.audio_file, model_size=args.model)
+    start(args.audio_file, model_size=args.model)
+    
