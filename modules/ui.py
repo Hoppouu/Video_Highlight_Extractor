@@ -6,9 +6,12 @@ from PySide6.QtWidgets import QDialog, QFileDialog, QMainWindow, QApplication, Q
 from PySide6.QtCore import QUrl, Qt, QObject, QEvent, QTimer, Signal, QThread
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
-from uifiles.ui_main import Ui_MainWindow
-from uifiles.ui_Clip_list import Ui_Form
 
+# 프로젝트 루트(두 단계의 상위 폴더)의 절대 경로를 sys.path 최상단에 추가
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from modules.uifiles.ui_main import Ui_MainWindow
+from modules.uifiles.ui_Clip_list import Ui_Form
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -181,6 +184,12 @@ class WindowDragger(QObject):
 
 
 if __name__ == "__main__":
+    app = QApplication()
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())
+
+def start():
     app = QApplication()
     window = MainWindow()
     window.show()
