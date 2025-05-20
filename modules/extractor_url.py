@@ -1,7 +1,6 @@
 import yt_dlp
 import os
 import ffmpeg
-
     
 title = "sample"
 directory = "./"
