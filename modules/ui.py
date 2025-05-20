@@ -182,7 +182,6 @@ class WindowDragger(QObject):
         return super().eventFilter(obj, event)
 
 
-
 if __name__ == "__main__":
     app = QApplication()
     window = MainWindow()
