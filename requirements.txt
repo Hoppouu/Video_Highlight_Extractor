@@ -4,3 +4,9 @@ ffmpeg
 torch
 openai-whisper
 openai
+# pandas
+# numpy
+# librosa
+# soundfile
+# tensorflow
+# tensorflow-hub

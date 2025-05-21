@@ -1,20 +1,23 @@
-
 import whisper
 import datetime
 import os
 import librosa
-import soundfile as sf
-import tensorflow as tf
-import tensorflow_hub as hub
+import torch
 import numpy as np
 import pandas as pd
 
-yamnet_model = hub.load('https://tfhub.dev/google/yamnet/1')
-class_map_path = tf.keras.utils.get_file(
-    'yamnet_class_map.csv',
-    'https://raw.githubusercontent.com/tensorflow/models/master/research/audioset/yamnet/yamnet_class_map.csv')
-class_map_df = pd.read_csv(class_map_path)
-yamnet_classes = class_map_df['display_name'].tolist()
+# PANNs Cnn14 모델 불러오기 (torch hub)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+panns_model = torch.hub.load('qiuqiangkong/panns_inference', 'cnn14', pretrained=True)
+panns_model.to(device)
+panns_model.eval()
+
+# PANNs AudioSet 클래스 이름 (출처: https://github.com/qiuqiangkong/audioset_tagging_cnn)
+# 중요한 'Laughter'와 'Screaming' 포함됨
+panns_class_map = [
+    "Speech", "Music", "Laughter", "Screaming",
+    # ... 필요시 전체 527개 클래스 넣을 수 있음
+]
 
 def format_srt_timestamp(seconds: float) -> str:
     td = datetime.timedelta(seconds=seconds)
@@ -26,16 +29,25 @@ def format_srt_timestamp(seconds: float) -> str:
     return f"{hours:02}:{minutes:02}:{seconds:02},{milliseconds:03}"
 
 def detect_laughter_scream(wav, sr, threshold=0.2):
-    if sr != 16000:
-        wav = librosa.resample(wav, orig_sr=sr, target_sr=16000)
-        sr = 16000
-    scores, _, _ = yamnet_model(wav)
-    mean_scores = tf.reduce_mean(scores, axis=0).numpy()
+    # PANNs는 32000Hz 입력
+    if sr != 32000:
+        wav = librosa.resample(wav, orig_sr=sr, target_sr=32000)
+        sr = 32000
+    
+    # 모델 입력용 변환
+    wav = torch.tensor(wav, dtype=torch.float32).to(device)
+    if wav.dim() == 1:
+        wav = wav.unsqueeze(0)  # (1, samples)
+    
+    with torch.no_grad():
+        output_dict = panns_model(wav)
+    scores = output_dict['clipwise_output'].cpu().numpy()[0]  # (527,)
 
     labels = []
-    if mean_scores[yamnet_classes.index("Laughter")] > threshold:
+    # 'Laughter'는 클래스 인덱스 2, 'Screaming'은 3 (위 배열 기준)
+    if scores[2] > threshold:
         labels.append("[웃음]")
-    if mean_scores[yamnet_classes.index("Screaming")] > threshold:
+    if scores[3] > threshold:
         labels.append("[비명]")
     return " ".join(labels)
 
@@ -74,10 +86,10 @@ def transcribe_to_srt_with_labels(audio_path, model_size="base", threshold=0.2):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Whisper + YAMNet으로 라벨 포함 SRT 자막 생성기")
+    parser = argparse.ArgumentParser(description="Whisper + PANNs(Cnn14)으로 라벨 포함 SRT 자막 생성기")
     parser.add_argument("audio_file", help="오디오 파일 경로 (MP3/WAV 등)")
     parser.add_argument("--model", default="base", help="Whisper 모델 크기 (tiny, base, small, medium, large)")
-    parser.add_argument("--threshold", type=float, default=0.2, help="YAMNet 감지 신뢰도 기준 (0~1 사이)")
+    parser.add_argument("--threshold", type=float, default=0.2, help="PANNs 감지 신뢰도 기준 (0~1 사이)")
     args = parser.parse_args()
 
     transcribe_to_srt_with_labels(args.audio_file, model_size=args.model, threshold=args.threshold)
