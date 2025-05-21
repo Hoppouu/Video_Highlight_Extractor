@@ -5,10 +5,11 @@ import librosa
 import torch
 import numpy as np
 import pandas as pd
+from panns_inference import AudioTagging
 
 # PANNs Cnn14 모델 불러오기 (torch hub)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-panns_model = torch.hub.load('qiuqiangkong/panns_inference', 'cnn14', pretrained=True)
+panns_model = AudioTagging(checkpoint_path=None)
 panns_model.to(device)
 panns_model.eval()
 
