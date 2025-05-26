@@ -1,4 +1,5 @@
 import stanza
+import os
 
 # 1. 한국어 문장 토크나이저 로딩
 nlp = stanza.Pipeline('ko', processors='tokenize', use_gpu=False)
@@ -61,7 +62,7 @@ def split_text_into_chunks(file_path, max_chunk_size=7000, step=2000):
 
 # 6. 실행 예시
 if __name__ == '__main__':
-    file_path = '/Users/gimhyeong-u/Video_Highlight_Extractor-1/modules/example.txt'
+    file_path = file_path = os.path.join(os.path.dirname(__file__), 'example.txt')
     chunks = split_text_into_chunks(file_path)
 
     for i, chunk in enumerate(chunks):
