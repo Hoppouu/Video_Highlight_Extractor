@@ -172,6 +172,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-sample.srt
-sample.webm
-final.txt
+*.srt
+*.webm
+*.txt
+*.mp3
