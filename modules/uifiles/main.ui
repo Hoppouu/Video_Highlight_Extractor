@@ -298,7 +298,7 @@ QPushButton:hover {
      </widget>
     </item>
     <item>
-     <layout class="QGridLayout" name="mainFrame" rowstretch="567,30,20,30" columnstretch="1008,240">
+     <layout class="QGridLayout" name="mainFrame" rowstretch="567,0,0,0" columnstretch="1008,0">
       <property name="leftMargin">
        <number>7</number>
       </property>
@@ -314,13 +314,6 @@ QPushButton:hover {
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="0" column="0">
-       <widget class="QWidget" name="videoPlayer" native="true">
-        <property name="styleSheet">
-         <string notr="true">border: 3px dashed #414141;</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1" rowspan="3" alignment="Qt::AlignmentFlag::AlignTop">
        <widget class="QScrollArea" name="clipList">
         <property name="minimumSize">
@@ -350,7 +343,7 @@ border-radius: 12px;</string>
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>241</width>
+           <width>240</width>
            <height>681</height>
           </rect>
          </property>
@@ -514,16 +507,6 @@ color: rgb(255,255,255);</string>
         </widget>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QSlider" name="playSlider">
-        <property name="maximum">
-         <number>1000</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="0">
        <layout class="QHBoxLayout" name="playbackFrame" stretch="90,10,9400">
         <property name="spacing">
@@ -596,8 +579,28 @@ color: rgb(255,255,255);</string>
         </item>
        </layout>
       </item>
+      <item row="1" column="0">
+       <widget class="QSlider" name="playSlider">
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="viewClipButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset theme="QIcon::ThemeIcon::ListAdd"/>
+        </property>
+       </widget>
+      </item>
       <item row="3" column="0">
-       <layout class="QHBoxLayout" name="playFrame" stretch="30,30,30,30,30,30,120,10,730">
+       <layout class="QHBoxLayout" name="playFrame" stretch="30,30,30,30,30,30,120,10,730,0">
         <property name="spacing">
          <number>1</number>
         </property>
@@ -607,8 +610,17 @@ color: rgb(255,255,255);</string>
            <enum>Qt::FocusPolicy::StrongFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(41, 41, 41);
-border-radius: 3px;</string>
+           <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(41, 41, 41);
+	border-radius: 3px;
+}
+
+QPushButton:hover {
+    background-color: #494949;
+    color: white;  
+    border: 2px solid #595959; 
+}</string>
           </property>
           <property name="text">
            <string/>
@@ -633,8 +645,17 @@ border-radius: 3px;</string>
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SkipBackward&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(41, 41, 41);
-border-radius: 3px;</string>
+           <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(41, 41, 41);
+	border-radius: 3px;
+}
+
+QPushButton:hover {
+    background-color: #494949;
+    color: white;  
+    border: 2px solid #595959; 
+}</string>
           </property>
           <property name="text">
            <string/>
@@ -656,8 +677,17 @@ border-radius: 3px;</string>
         <item>
          <widget class="QPushButton" name="playVideoButton">
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(41, 41, 41);
-border-radius: 3px;</string>
+           <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(41, 41, 41);
+	border-radius: 3px;
+}
+
+QPushButton:hover {
+    background-color: #494949;
+    color: white;  
+    border: 2px solid #595959; 
+}</string>
           </property>
           <property name="text">
            <string/>
@@ -682,8 +712,17 @@ border-radius: 3px;</string>
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;MediaSkipForward&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(41, 41, 41);
-border-radius: 3px;</string>
+           <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(41, 41, 41);
+	border-radius: 3px;
+}
+
+QPushButton:hover {
+    background-color: #494949;
+    color: white;  
+    border: 2px solid #595959; 
+}</string>
           </property>
           <property name="text">
            <string/>
@@ -708,8 +747,17 @@ border-radius: 3px;</string>
            <string/>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(41, 41, 41);
-border-radius: 3px;</string>
+           <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(41, 41, 41);
+	border-radius: 3px;
+}
+
+QPushButton:hover {
+    background-color: #494949;
+    color: white;  
+    border: 2px solid #595959; 
+}</string>
           </property>
           <property name="text">
            <string/>
@@ -734,8 +782,17 @@ border-radius: 3px;</string>
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;MediaSkipForward&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(41, 41, 41);
-border-radius: 3px;</string>
+           <string notr="true">QPushButton {
+	border: none;
+	background-color: rgb(41, 41, 41);
+	border-radius: 3px;
+}
+
+QPushButton:hover {
+    background-color: #494949;
+    color: white;  
+    border: 2px solid #595959; 
+}</string>
           </property>
           <property name="text">
            <string/>
@@ -811,15 +868,22 @@ border-radius: 3px;</string>
           </property>
          </spacer>
         </item>
+        <item>
+         <widget class="QPushButton" name="optionButton">
+          <property name="styleSheet">
+           <string notr="true">color: #aaaaaa</string>
+          </property>
+          <property name="text">
+           <string>Option</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="viewClipButton">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset theme="QIcon::ThemeIcon::ListAdd"/>
+      <item row="0" column="0">
+       <widget class="QWidget" name="videoPlayer" native="true">
+        <property name="styleSheet">
+         <string notr="true">border: 3px dashed #414141;</string>
         </property>
        </widget>
       </item>

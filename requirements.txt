@@ -1,5 +1,12 @@
+PySide6
 yt_dlp
 ffmpeg
 torch
 openai-whisper
 openai
+# pandas
+# numpy
+# librosa
+# soundfile
+# tensorflow
+# tensorflow-hub

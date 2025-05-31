@@ -15,7 +15,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 prompt = "Explain how wonderful you are"  # English example
 prompt = "스스로를 자랑해 봐"       # Korean example
 
-prompt = f"""
+prompt = """
 위 내용을 요약해 주세요.
 """
 messages = [

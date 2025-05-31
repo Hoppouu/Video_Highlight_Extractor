@@ -64,30 +64,17 @@ class Ui_MainWindow(object):
         self.minimizeWindow = QPushButton(self.framebar)
         self.minimizeWindow.setObjectName(u"minimizeWindow")
         self.minimizeWindow.setMinimumSize(QSize(30, 30))
-        palette = QPalette()
-        brush = QBrush(QColor(61, 61, 61, 255))
-        brush.setStyle(Qt.BrushStyle.SolidPattern)
-        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Button, brush)
-        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Base, brush)
-        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Window, brush)
-        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Button, brush)
-        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Base, brush)
-        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Window, brush)
-        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Button, brush)
-        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Base, brush)
-        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Window, brush)
-        self.minimizeWindow.setPalette(palette)
         self.minimizeWindow.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    background-color: #494949;  /* \ub9c8\uc6b0\uc2a4\ub97c \uc62c\ub838\uc744 \ub54c \ubc30\uacbd \uc0c9\uc0c1 */\n"
-"    color: white;  /* \ub9c8\uc6b0\uc2a4\ub97c \uc62c\ub838\uc744 \ub54c \ud14d\uc2a4\ud2b8 \uc0c9\uc0c1 */\n"
-"    border: 2px solid #595959;  /* \ub9c8\uc6b0\uc2a4\ub97c \uc62c\ub838\uc744 \ub54c \ud14c\ub450\ub9ac \uc0c9\uc0c1 */\n"
+"    background-color: #494949;\n"
+"    color: white;\n"
+"    border: 2px solid #595959;\n"
 "}")
         icon = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.ApplicationExit))
-        self.minimizeWindow.setIcon(icon)
+        #self.minimizeWindow.setIcon(icon)
         self.minimizeWindow.setIconSize(QSize(30, 30))
 
         self.horizontalLayout.addWidget(self.minimizeWindow)
@@ -100,11 +87,11 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    background-color: #494949;  /* \ub9c8\uc6b0\uc2a4\ub97c \uc62c\ub838\uc744 \ub54c \ubc30\uacbd \uc0c9\uc0c1 */\n"
-"    color: white;  /* \ub9c8\uc6b0\uc2a4\ub97c \uc62c\ub838\uc744 \ub54c \ud14d\uc2a4\ud2b8 \uc0c9\uc0c1 */\n"
-"    border: 2px solid #595959;  /* \ub9c8\uc6b0\uc2a4\ub97c \uc62c\ub838\uc744 \ub54c \ud14c\ub450\ub9ac \uc0c9\uc0c1 */\n"
+"    background-color: #494949;\n"
+"    color: white;\n"
+"    border: 2px solid #595959;\n"
 "}")
-        self.toggleMaximizeRestore.setIcon(icon)
+        #self.toggleMaximizeRestore.setIcon(icon)
         self.toggleMaximizeRestore.setIconSize(QSize(30, 30))
 
         self.horizontalLayout.addWidget(self.toggleMaximizeRestore)
@@ -117,12 +104,12 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    background-color: #494949;  /* \ub9c8\uc6b0\uc2a4\ub97c \uc62c\ub838\uc744 \ub54c \ubc30\uacbd \uc0c9\uc0c1 */\n"
-"    color: white;  /* \ub9c8\uc6b0\uc2a4\ub97c \uc62c\ub838\uc744 \ub54c \ud14d\uc2a4\ud2b8 \uc0c9\uc0c1 */\n"
-"    border: 2px solid #595959;  /* \ub9c8\uc6b0\uc2a4\ub97c \uc62c\ub838\uc744 \ub54c \ud14c\ub450\ub9ac \uc0c9\uc0c1 */\n"
+"    background-color: #494949;\n"
+"    color: white;\n"
+"    border: 2px solid #595959;\n"
 "}")
         icon1 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.WindowClose))
-        self.closeWindow.setIcon(icon1)
+        #self.closeWindow.setIcon(icon1)
         self.closeWindow.setIconSize(QSize(30, 30))
 
         self.horizontalLayout.addWidget(self.closeWindow)
@@ -139,7 +126,7 @@ class Ui_MainWindow(object):
         self.mainFrame.setSpacing(0)
         self.mainFrame.setObjectName(u"mainFrame")
         self.mainFrame.setContentsMargins(7, 5, 7, 10)
-        self.videoPlayer = QVideoWidget(self.centralwidget)
+        self.videoPlayer = QLabel(self.centralwidget)
         self.videoPlayer.setObjectName(u"videoPlayer")
         self.videoPlayer.setStyleSheet(u"border: 3px dashed #414141;")
 
@@ -160,77 +147,14 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(10, 10, 10, 0)
-        self.clip = QFrame(self.scrollAreaWidgetContents)
-        self.clip.setObjectName(u"clip")
-        self.clip.setMinimumSize(QSize(220, 150))
-        self.clip.setMaximumSize(QSize(220, 150))
-        self.clip.setStyleSheet(u"background-color: rgb(39, 39, 39);")
-        self.clip.setFrameShape(QFrame.Shape.StyledPanel)
-        self.clip.setFrameShadow(QFrame.Shadow.Raised)
-        self.gridLayout_9 = QGridLayout(self.clip)
-        self.gridLayout_9.setSpacing(0)
-        self.gridLayout_9.setObjectName(u"gridLayout_9")
-        self.gridLayout_9.setContentsMargins(0, 5, 0, 5)
-        self.timestamp = QTextBrowser(self.clip)
-        self.timestamp.setObjectName(u"timestamp")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.timestamp.sizePolicy().hasHeightForWidth())
-        self.timestamp.setSizePolicy(sizePolicy)
-        self.timestamp.setMaximumSize(QSize(150, 30))
-        self.timestamp.setStyleSheet(u"background-color: rgb(39, 39, 39);\n"
-"color: rgb(255,255,255);")
 
-        self.gridLayout_9.addWidget(self.timestamp, 0, 0, 1, 1)
-
-        self.clipCheckBox = QCheckBox(self.clip)
-        self.clipCheckBox.setObjectName(u"clipCheckBox")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.clipCheckBox.sizePolicy().hasHeightForWidth())
-        self.clipCheckBox.setSizePolicy(sizePolicy1)
-        self.clipCheckBox.setStyleSheet(u"")
-        self.clipCheckBox.setCheckable(True)
-
-        self.gridLayout_9.addWidget(self.clipCheckBox, 0, 1, 1, 1)
-
-        self.downButton = QPushButton(self.clip)
-        self.downButton.setObjectName(u"downButton")
-        sizePolicy1.setHeightForWidth(self.downButton.sizePolicy().hasHeightForWidth())
-        self.downButton.setSizePolicy(sizePolicy1)
-        self.downButton.setSizeIncrement(QSize(0, 0))
-        self.downButton.setBaseSize(QSize(0, 0))
-        self.downButton.setStyleSheet(u"QPushButton {\n"
-"	border: 1px solid block;\n"
-"	color: rgb(255,255,255);\n"
-"}")
-
-        self.gridLayout_9.addWidget(self.downButton, 0, 2, 1, 1)
-
-        self.summary = QLabel(self.clip)
-        self.summary.setObjectName(u"summary")
-        sizePolicy.setHeightForWidth(self.summary.sizePolicy().hasHeightForWidth())
-        self.summary.setSizePolicy(sizePolicy)
-        self.summary.setStyleSheet(u"background-color: rgb(70, 70, 70);\n"
-"border-radius: 0;\n"
-"color: rgb(255,255,255);")
-        self.summary.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
-
-        self.gridLayout_9.addWidget(self.summary, 1, 0, 1, 3)
-
-        self.gridLayout_9.setRowStretch(0, 30)
-        self.gridLayout_9.setRowStretch(1, 220)
-        self.gridLayout_9.setColumnStretch(0, 110)
-        self.gridLayout_9.setColumnStretch(1, 55)
-        self.gridLayout_9.setColumnStretch(2, 55)
-
-        self.verticalLayout_2.addWidget(self.clip)
+        # 예시 클립 제거됨
 
         self.clipList.setWidget(self.scrollAreaWidgetContents)
 
-        self.mainFrame.addWidget(self.clipList, 0, 1, 3, 1, Qt.AlignmentFlag.AlignTop)
+        #self.mainFrame.addWidget(self.clipList, 0, 1, 3, 1, Qt.AlignmentFlag.AlignTop)
+        self.mainFrame.addWidget(self.clipList, 0, 1, 3, 1)
+
 
         self.playSlider = QSlider(self.centralwidget)
         self.playSlider.setObjectName(u"playSlider")
@@ -260,10 +184,11 @@ class Ui_MainWindow(object):
         self.playSpeedDoubleSpinBox.setStyleSheet(u"color: rgb(180, 180, 180);")
         self.playSpeedDoubleSpinBox.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
         self.playSpeedDoubleSpinBox.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
-        self.playSpeedDoubleSpinBox.setMinimum(-2.000000000000000)
+        self.playSpeedDoubleSpinBox.setMinimum(0.2500000000000000)
         self.playSpeedDoubleSpinBox.setMaximum(2.000000000000000)
         self.playSpeedDoubleSpinBox.setSingleStep(0.250000000000000)
         self.playSpeedDoubleSpinBox.setValue(1.000000000000000)
+        self.playSpeedDoubleSpinBox.lineEdit().setReadOnly(True)
 
         self.playbackFrame.addWidget(self.playSpeedDoubleSpinBox)
 
@@ -283,8 +208,17 @@ class Ui_MainWindow(object):
         self.slowDownButton = QPushButton(self.centralwidget)
         self.slowDownButton.setObjectName(u"slowDownButton")
         self.slowDownButton.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
-        self.slowDownButton.setStyleSheet(u"background-color: rgb(41, 41, 41);\n"
-"border-radius: 3px;")
+        self.slowDownButton.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	background-color: rgb(41, 41, 41);\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #494949;\n"
+"    color: white;  \n"
+"    border: 2px solid #595959; \n"
+"}")
         icon2 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.MediaSeekBackward))
         self.slowDownButton.setIcon(icon2)
         self.slowDownButton.setIconSize(QSize(30, 30))
@@ -293,8 +227,17 @@ class Ui_MainWindow(object):
 
         self.skipBackwardButton = QPushButton(self.centralwidget)
         self.skipBackwardButton.setObjectName(u"skipBackwardButton")
-        self.skipBackwardButton.setStyleSheet(u"background-color: rgb(41, 41, 41);\n"
-"border-radius: 3px;")
+        self.skipBackwardButton.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	background-color: rgb(41, 41, 41);\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #494949;\n"
+"    color: white;  \n"
+"    border: 2px solid #595959; \n"
+"}")
         icon3 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.MediaSkipBackward))
         self.skipBackwardButton.setIcon(icon3)
         self.skipBackwardButton.setIconSize(QSize(30, 30))
@@ -303,18 +246,39 @@ class Ui_MainWindow(object):
 
         self.playVideoButton = QPushButton(self.centralwidget)
         self.playVideoButton.setObjectName(u"playVideoButton")
-        self.playVideoButton.setStyleSheet(u"background-color: rgb(41, 41, 41);\n"
-"border-radius: 3px;")
-        icon4 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.MediaPlaybackPause))
-        self.playVideoButton.setIcon(icon4)
+        self.playVideoButton.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	background-color: rgb(41, 41, 41);\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #494949;\n"
+"    color: white;  \n"
+"    border: 2px solid #595959; \n"
+"}")
+        self.icon_play = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.MediaPlaybackStart))
+        self.icon_pause = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.MediaPlaybackPause))
+        self.playVideoButton.setIcon(self.icon_pause) 
         self.playVideoButton.setIconSize(QSize(30, 30))
+        self.playVideoButton.setMinimumSize(40, 40)   # 아이콘 크기
+        self.playVideoButton.setMaximumSize(40, 40)   # 아이콘 크기
 
         self.playFrame.addWidget(self.playVideoButton)
 
         self.skipForwardButton = QPushButton(self.centralwidget)
         self.skipForwardButton.setObjectName(u"skipForwardButton")
-        self.skipForwardButton.setStyleSheet(u"background-color: rgb(41, 41, 41);\n"
-"border-radius: 3px;")
+        self.skipForwardButton.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	background-color: rgb(41, 41, 41);\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #494949;\n"
+"    color: white;  \n"
+"    border: 2px solid #595959; \n"
+"}")
         icon5 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.MediaSkipForward))
         self.skipForwardButton.setIcon(icon5)
         self.skipForwardButton.setIconSize(QSize(30, 30))
@@ -323,8 +287,17 @@ class Ui_MainWindow(object):
 
         self.speedUpButton = QPushButton(self.centralwidget)
         self.speedUpButton.setObjectName(u"speedUpButton")
-        self.speedUpButton.setStyleSheet(u"background-color: rgb(41, 41, 41);\n"
-"border-radius: 3px;")
+        self.speedUpButton.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	background-color: rgb(41, 41, 41);\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #494949;\n"
+"    color: white;  \n"
+"    border: 2px solid #595959; \n"
+"}")
         icon6 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.MediaSeekForward))
         self.speedUpButton.setIcon(icon6)
         self.speedUpButton.setIconSize(QSize(30, 30))
@@ -333,8 +306,17 @@ class Ui_MainWindow(object):
 
         self.toggleMuteButton = QPushButton(self.centralwidget)
         self.toggleMuteButton.setObjectName(u"toggleMuteButton")
-        self.toggleMuteButton.setStyleSheet(u"background-color: rgb(41, 41, 41);\n"
-"border-radius: 3px;")
+        self.toggleMuteButton.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	background-color: rgb(41, 41, 41);\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: #494949;\n"
+"    color: white;  \n"
+"    border: 2px solid #595959; \n"
+"}")
         icon7 = QIcon(QIcon.fromTheme(QIcon.ThemeIcon.AudioVolumeHigh))
         self.toggleMuteButton.setIcon(icon7)
         self.toggleMuteButton.setIconSize(QSize(30, 30))
@@ -366,6 +348,12 @@ class Ui_MainWindow(object):
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.playFrame.addItem(self.horizontalSpacer_2)
+
+        self.optionButton = QPushButton(self.centralwidget)
+        self.optionButton.setObjectName(u"optionButton")
+        self.optionButton.setStyleSheet(u"color: #aaaaaa")
+
+        self.playFrame.addWidget(self.optionButton)
 
         self.playFrame.setStretch(0, 30)
         self.playFrame.setStretch(1, 30)
@@ -405,6 +393,38 @@ class Ui_MainWindow(object):
         self.speedUpButton.clicked.connect(self.playSpeedDoubleSpinBox.stepUp)
         self.slowDownButton.clicked.connect(self.playSpeedDoubleSpinBox.stepDown)
 
+        self.minimizeWindow.setText("—")
+        self.toggleMaximizeRestore.setText("□")
+        self.closeWindow.setText("×")
+
+        self.minimizeWindow.setStyleSheet("""
+        QPushButton { 
+                color: white; 
+                border: none; 
+                background: transparent; 
+                font-size: 16px;
+        }
+        QPushButton:hover { background: #e0e0e0; color: black; }
+        """)
+        self.toggleMaximizeRestore.setStyleSheet("""
+        QPushButton { 
+                color: white; 
+                border: none; 
+                background: transparent; 
+                font-size: 14px;
+        }
+        QPushButton:hover { background: #e0e0e0; color: black; }
+        """)
+        self.closeWindow.setStyleSheet("""
+        QPushButton { 
+                color: white; 
+                border: none; 
+                background: transparent; 
+                font-size: 20px;
+        }
+        QPushButton:hover { background: #e57373; color: black; }
+        """)
+
         QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
@@ -414,54 +434,13 @@ class Ui_MainWindow(object):
         self.minimizeWindow.setText("")
         self.toggleMaximizeRestore.setText("")
         self.closeWindow.setText("")
-        self.timestamp.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"hr { height: 1px; border-width: 0; }\n"
-"li.unchecked::marker { content: \"\\2610\"; }\n"
-"li.checked::marker { content: \"\\2612\"; }\n"
-"</style></head><body style=\" font-family:'\ub9d1\uc740 \uace0\ub515'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">00:00:00 ~ 00:00:00</p></body></html>", None))
-        self.clipCheckBox.setText("")
-        self.downButton.setText(QCoreApplication.translate("MainWindow", u"Down", None))
-        self.summary.setText(QCoreApplication.translate("MainWindow", u"TextLabel", None))
         self.videoTime.setText(QCoreApplication.translate("MainWindow", u"00:00:00 / 00:00:00", None))
-        self.slowDownButton.setText("")
-#if QT_CONFIG(shortcut)
-        self.slowDownButton.setShortcut(QCoreApplication.translate("MainWindow", u".", None))
-#endif // QT_CONFIG(shortcut)
-#if QT_CONFIG(tooltip)
-        self.skipBackwardButton.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>SkipBackward</p></body></html>", None))
-#endif // QT_CONFIG(tooltip)
-        self.skipBackwardButton.setText("")
-#if QT_CONFIG(shortcut)
-        self.skipBackwardButton.setShortcut(QCoreApplication.translate("MainWindow", u"Z", None))
-#endif // QT_CONFIG(shortcut)
-        self.playVideoButton.setText("")
-#if QT_CONFIG(shortcut)
-        self.playVideoButton.setShortcut(QCoreApplication.translate("MainWindow", u"Space", None))
-#endif // QT_CONFIG(shortcut)
-#if QT_CONFIG(whatsthis)
-        self.skipForwardButton.setWhatsThis(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>MediaSkipForward</p></body></html>", None))
-#endif // QT_CONFIG(whatsthis)
-        self.skipForwardButton.setText("")
-#if QT_CONFIG(shortcut)
-        self.skipForwardButton.setShortcut(QCoreApplication.translate("MainWindow", u"X", None))
-#endif // QT_CONFIG(shortcut)
-#if QT_CONFIG(tooltip)
-        self.speedUpButton.setToolTip("")
-#endif // QT_CONFIG(tooltip)
-        self.speedUpButton.setText("")
-#if QT_CONFIG(shortcut)
-        self.speedUpButton.setShortcut(QCoreApplication.translate("MainWindow", u"/", None))
-#endif // QT_CONFIG(shortcut)
-#if QT_CONFIG(whatsthis)
-        self.toggleMuteButton.setWhatsThis(QCoreApplication.translate("MainWindow", u"<html><head/><body><p>MediaSkipForward</p></body></html>", None))
-#endif // QT_CONFIG(whatsthis)
-        self.toggleMuteButton.setText("")
-#if QT_CONFIG(shortcut)
-        self.toggleMuteButton.setShortcut(QCoreApplication.translate("MainWindow", u"M", None))
-#endif // QT_CONFIG(shortcut)
         self.viewClipButton.setText("")
+        self.slowDownButton.setShortcut(QCoreApplication.translate("MainWindow", u".", None))
+        self.skipBackwardButton.setShortcut(QCoreApplication.translate("MainWindow", u"Z", None))
+        self.playVideoButton.setShortcut(QCoreApplication.translate("MainWindow", u"Space", None))
+        self.skipForwardButton.setShortcut(QCoreApplication.translate("MainWindow", u"X", None))
+        self.speedUpButton.setShortcut(QCoreApplication.translate("MainWindow", u"/", None))
+        self.toggleMuteButton.setShortcut(QCoreApplication.translate("MainWindow", u"M", None))
+        self.optionButton.setText(QCoreApplication.translate("MainWindow", u"Option", None))
     # retranslateUi
-
