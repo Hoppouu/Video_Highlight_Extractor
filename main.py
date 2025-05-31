@@ -16,10 +16,10 @@ def set_MainWindow():
 def temp():
     str = input("URL을 입력해주세요 : ")  
     extractor_url.download_sound_with_ytdlp(str)
-    sound_to_text.start("sample.mp3")
+    sound_to_text.start("sample.webm", model='medium')
     api_call.call("sample.srt")
     
-    
-temp()
+api_call.call("sample.srt")
+#temp()
 ui.start()
  
