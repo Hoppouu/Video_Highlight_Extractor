@@ -12,7 +12,7 @@ class ClipMaker():
 
         clip = VideoFileClip(path)
 
-        for (start, _), checked in clip_check_state.items():
+        for start, checked in clip_check_state.items():
             if checked:
                 start_sec = max(0, self.time_to_sec(start) + startPoint)
                 end_sec = min(start_sec + clipLength, clip.duration)

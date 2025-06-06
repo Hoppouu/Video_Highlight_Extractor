@@ -6,6 +6,7 @@ import cv2
 from tkinter import Variable
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog, QSlider, QSizePolicy
 from PySide6.QtCore import Qt, QObject, QEvent, QTimer, Signal
+from modules import utils
 # 프로젝트 루트(두 단계의 상위 폴더)의 절대 경로를 sys.path 최상단에 추가
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -55,22 +56,7 @@ class MainWindow(QMainWindow):
         self.skipFrame = 3  # 움직일 프레임 크기
 
         # 타임라인 데이터 예시
-        self.timeline_data = [
-            {"start_time": "00:00:01", "description": "바루스가 킬"},
-            {"start_time": "00:00:05", "description": "킬을 못 먹었어야 했는데"},
-            {"start_time": "00:00:08", "description": "다킬 언급"},
-            {"start_time": "00:00:12", "description": '"나 킬!" 반복'},
-            {"start_time": "00:00:16", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:00:23", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:00:36", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:00:50", "description": "바루스가 킬"},
-            {"start_time": "00:01:16", "description": "킬을 못 먹었어야 했는데"},
-            {"start_time": "00:01:51", "description": "다킬 언급"},
-            {"start_time": "00:02:35", "description": '"나 킬!" 반복'},
-            {"start_time": "00:02:59", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:03:27", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:04:01", "description": "타워 들고 다니는 장면"},
-        ]
+        self.timeline_data = utils.dic_to_ui_dic("final.txt")
 
         #영상 출력 핸들러
         self.video_hander = VideoPlayerHandler(self, self.ui, self.path, self.skipFrame)
@@ -354,6 +340,7 @@ class VideoPlayerHandler(QObject):
         self.path, _ = QFileDialog.getOpenFileName(
             self.parent, "영상 파일 선택", "", "Video Files (*.mp4 *.avi *.mkv)"
         )
+        
         self.play_from_path()
 
     def play_from_path(self):
@@ -368,6 +355,7 @@ class VideoPlayerHandler(QObject):
                 print(f"Failed to set video widget: {e}")
 
             self.player.play()
+            self.player.pause()
             self.timer.start()
             self.emit_load_video()
         else:

@@ -19,7 +19,7 @@ def temp():
     sound_to_text.start("sample.webm", model='medium')
     api_call.call("sample.srt")
     
-api_call.call("sample.srt")
+# api_call.call("sample.srt")
 #temp()
 ui.start()
  
