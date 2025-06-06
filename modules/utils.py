@@ -1,5 +1,8 @@
 def dic_to_ui_dic(file_path: str) -> list:
     timeline_data = []
+    if(file_path == ""):
+        return
+    
     with open(file_path, 'r', encoding='utf-8') as f:
         for line in f:
             if ' : ' in line:
