@@ -52,17 +52,17 @@ class UiForm(QDialog):
         for index, clip in enumerate(timeline_data):
             start_sec = time_to_sec(clip["start_time"])
             end_sec = start_sec + self.clipLength
-            end_time = sec_to_time(min(self.videoLength, end_sec))
-            key = (clip["start_time"], end_time)
+            self.end_time = sec_to_time(min(self.videoLength, end_sec))
+            key = (clip["start_time"], self.end_time)
             clip_widget = ClipWidget(
                 video_path=self.path,
                 fps=self.fps,
                 start_time=clip["start_time"],
-                end_time=end_time,
+                end_time=self.end_time,
                 show_description=False
             )
             clip_widget.time_selected.connect(self.seek_video_to_time)
-            clip_widget.checkbox.setChecked(self.check_state.get(key, False))
+            clip_widget.checkbox.setChecked(self.check_state.get(key[0], False))
             clip_widget.checkbox.stateChanged.connect(lambda state, k=key: self.checkbox_changed.emit(k, state))
             self.clip_widgets.append(clip_widget)
             row = index // columns
@@ -71,7 +71,7 @@ class UiForm(QDialog):
 
     def update_checkbox_state(self, key, state):
         for w in self.clip_widgets:
-            if (w.start_time, w.end_time) == key:
+            if w.start_time == key[0]:
                 w.checkbox.setChecked(state)
 
         self.update_clip_count_label()

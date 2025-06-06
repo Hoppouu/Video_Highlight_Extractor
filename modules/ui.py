@@ -3,7 +3,7 @@ import zipfile
 import ctypes
 import sys
 import cv2
-from tkinter import Variable
+
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog, QSlider, QSizePolicy
 from PySide6.QtCore import Qt, QObject, QEvent, QTimer, Signal
 from modules import utils
@@ -68,9 +68,6 @@ class MainWindow(QMainWindow):
         for clip in self.timeline_data:
             key = (clip["start_time"])
             self.clip_check_state[key] = False
-
-        # 클립 리스트 출력
-        # self.populate_main_clip_list(self.timeline_data)
 
         #윈도우 프레임 제거
         self.setWindowFlag(Qt.FramelessWindowHint)
@@ -218,13 +215,13 @@ class MainWindow(QMainWindow):
 
     def on_clip_checkbox_changed(self, key, state):
         # 메인에서 체크박스 변경 시 상태 저장 및 viewall에도 반영
-        self.clip_check_state[key] = bool(state)
+        self.clip_check_state[key[0]] = bool(state)
         if hasattr(self, 'viewall_window'):
             self.viewall_window.update_checkbox_state(key, bool(state))
 
     def on_clip_checkbox_changed_from_viewall(self, key, state):
         # viewall에서 체크박스 변경 시 메인에도 반영
-        self.clip_check_state[key] = bool(state)
+        self.clip_check_state[key[0]] = bool(state)
         for w in getattr(self, 'clip_widgets', []):
             if (w.start_time, w.end_time) == key:
                 w.checkbox.setChecked(bool(state))
@@ -250,7 +247,7 @@ class MainWindow(QMainWindow):
 class VideoPlayerHandler(QObject):
     load_video = Signal(bool)
 
-    def __init__(self, parent: QWidget, ui: Variable, path, skipFrame):
+    def __init__(self, parent: QWidget, ui, path, skipFrame):
         super().__init__(parent)
         self.parent = parent
         self.ui = ui
@@ -353,11 +350,11 @@ class VideoPlayerHandler(QObject):
                 self.player.set_hwnd(int(self.video_widget.winId()))
             except Exception as e:
                 print(f"Failed to set video widget: {e}")
-
-            self.player.play()
-            self.player.pause()
-            self.timer.start()
+                
             self.emit_load_video()
+            self.timer.start()
+            self.player.play()
+            QTimer.singleShot(200, self.player.pause)
         else:
             return
 

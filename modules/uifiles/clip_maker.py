@@ -14,7 +14,7 @@ class ClipMaker():
 
         for start, checked in clip_check_state.items():
             if checked:
-                start_sec = max(0, self.time_to_sec(start) + startPoint)
+                start_sec = max(0, time_to_sec(start) + startPoint)
                 end_sec = min(start_sec + clipLength, clip.duration)
 
                 subclip = clip.subclipped(start_sec, end_sec)
