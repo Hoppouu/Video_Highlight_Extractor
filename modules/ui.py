@@ -6,6 +6,7 @@ import cv2
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog, QSlider, QSizePolicy
 from PySide6.QtCore import Qt, QObject, QEvent, QTimer, Signal
+from modules import utils, assemble
 # 프로젝트 루트(두 단계의 상위 폴더)의 절대 경로를 sys.path 최상단에 추가
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -42,6 +43,8 @@ vlc_base_path = setup_vlc_environment()
 
 import vlc
 
+llm_output = ""
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -53,6 +56,9 @@ class MainWindow(QMainWindow):
         self.startPoint = -30 # 클립 시작 위치, 받은 결과에서 사용자가 조절용
         self.clipLength = 60    # 클립 길이
         self.skipFrame = 3  # 움직일 프레임 크기
+    
+        # 타임라인 데이터 예시
+        self.timeline_data = utils.dic_to_ui_dic(llm_output)
 
         #영상 출력 핸들러
         self.video_hander = VideoPlayerHandler(self, self.ui, self.path, self.skipFrame)
@@ -295,10 +301,16 @@ class VideoPlayerHandler(QObject):
         ui.playSpeedDoubleSpinBox.valueChanged.connect(self.set_playback_speed)
 
         # 영상 소리 조작
-        ui.toggleMuteButton.clicked.connect(self.toggle_mute)
+        #ui.toggleMuteButton.clicked.connect(self.toggle_mute)
+        ui.toggleMuteButton.clicked.connect(self.start_ai)
         ui.volumeSpinBox.valueChanged.connect(self.set_volume)
         ui.volumeBar.valueChanged.connect(ui.volumeSpinBox.setValue)
 
+
+    def start_ai(self):
+        llm_output = assemble.start(self.path)
+        self.timeline_data = utils.dic_to_ui_dic(llm_output)
+        
     # 소리 뮤트
     def toggle_mute(self):
         is_muted = self.player.audio_get_mute()
@@ -355,6 +367,7 @@ class VideoPlayerHandler(QObject):
         self.path, _ = QFileDialog.getOpenFileName(
             self.parent, "영상 파일 선택", "", "Video Files (*.mp4 *.avi *.mkv)"
         )
+        
         self.play_from_path()
 
     def play_from_path(self):

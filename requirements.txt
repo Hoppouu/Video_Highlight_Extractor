@@ -2,8 +2,12 @@ PySide6
 yt_dlp
 ffmpeg
 torch
+moviepy
+stanza
 openai-whisper
 openai
+opencv-python
+python-vlc
 # pandas
 # numpy
 # librosa
