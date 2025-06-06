@@ -3,7 +3,7 @@ import zipfile
 import ctypes
 import sys
 import cv2
-from tkinter import Variable
+
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog, QSlider, QSizePolicy
 from PySide6.QtCore import Qt, QObject, QEvent, QTimer, Signal
 # 프로젝트 루트(두 단계의 상위 폴더)의 절대 경로를 sys.path 최상단에 추가
@@ -50,41 +50,14 @@ class MainWindow(QMainWindow):
     
         # 옵션 기본 값
         self.path = None    # 영상 주소
-        self.startPoint = 0 # 클립 시작 위치, 받은 결과에서 사용자가 조절용
+        self.startPoint = -30 # 클립 시작 위치, 받은 결과에서 사용자가 조절용
         self.clipLength = 60    # 클립 길이
         self.skipFrame = 3  # 움직일 프레임 크기
-
-        # 타임라인 데이터 예시
-        self.timeline_data = [
-            {"start_time": "00:00:01", "description": "바루스가 킬"},
-            {"start_time": "00:00:05", "description": "킬을 못 먹었어야 했는데"},
-            {"start_time": "00:00:08", "description": "다킬 언급"},
-            {"start_time": "00:00:12", "description": '"나 킬!" 반복'},
-            {"start_time": "00:00:16", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:00:23", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:00:36", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:00:50", "description": "바루스가 킬"},
-            {"start_time": "00:01:16", "description": "킬을 못 먹었어야 했는데"},
-            {"start_time": "00:01:51", "description": "다킬 언급"},
-            {"start_time": "00:02:35", "description": '"나 킬!" 반복'},
-            {"start_time": "00:02:59", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:03:27", "description": "타워 들고 다니는 장면"},
-            {"start_time": "00:04:01", "description": "타워 들고 다니는 장면"},
-        ]
 
         #영상 출력 핸들러
         self.video_hander = VideoPlayerHandler(self, self.ui, self.path, self.skipFrame)
         self.ui.videoPlayer.mousePressEvent = self.on_video_click
         self.video_hander.load_video.connect(self.on_load_video)
-
-        # 체크 상태를 저장할 딕셔너리 (key: (start, end), value: bool)
-        self.clip_check_state = {}
-        for clip in self.timeline_data:
-            key = (clip["start_time"])
-            self.clip_check_state[key] = False
-
-        # 클립 리스트 출력
-        # self.populate_main_clip_list(self.timeline_data)
 
         #윈도우 프레임 제거
         self.setWindowFlag(Qt.FramelessWindowHint)
@@ -112,9 +85,36 @@ class MainWindow(QMainWindow):
 
         self.ui.optionButton.clicked.connect(self.open_option)
 
+        self.video_hander.on_make_clip_state_dic.connect(self.make_clip_state)
+
         #스페이스바는 keyPressEvent에서만 동작하도록 QPushButton이 포커스 없앰. 
         #재생 상태에 따라 아이콘 변경되게 했더니 스페이스바로 조작시 두번 실행되는 오류 수정
         self.ui.playVideoButton.setFocusPolicy(Qt.NoFocus) 
+
+    def make_clip_state(self, path):
+        # 타임라인 데이터 예시
+        self.timeline_data = [
+                    {"start_time": "00:00:01", "description": "바루스가 킬"},
+                    {"start_time": "00:00:05", "description": "킬을 못 먹었어야 했는데"},
+                    {"start_time": "00:00:08", "description": "다킬 언급"},
+                    {"start_time": "00:00:12", "description": '"나 킬!" 반복'},
+                    {"start_time": "00:00:16", "description": "타워 들고 다니는 장면"},
+                    {"start_time": "00:00:23", "description": "타워 들고 다니는 장면"},
+                    {"start_time": "00:00:36", "description": "타워 들고 다니는 장면"},
+                    {"start_time": "00:00:50", "description": "바루스가 킬"},
+                    {"start_time": "00:01:16", "description": "킬을 못 먹었어야 했는데"},
+                    {"start_time": "00:01:51", "description": "다킬 언급"},
+                    {"start_time": "00:02:35", "description": '"나 킬!" 반복'},
+                    {"start_time": "00:02:59", "description": "타워 들고 다니는 장면"},
+                    {"start_time": "00:03:27", "description": "타워 들고 다니는 장면"},
+                    {"start_time": "00:04:01", "description": "타워 들고 다니는 장면"},
+                ]
+
+        # 체크 상태를 저장할 딕셔너리 (key: (start, end), value: bool)
+        self.clip_check_state = {}
+        for clip in self.timeline_data:
+            key = (clip["start_time"])
+            self.clip_check_state[key] = False
 
     def on_load_video(self, on):
         if on:
@@ -232,13 +232,13 @@ class MainWindow(QMainWindow):
 
     def on_clip_checkbox_changed(self, key, state):
         # 메인에서 체크박스 변경 시 상태 저장 및 viewall에도 반영
-        self.clip_check_state[key] = bool(state)
+        self.clip_check_state[key[0]] = bool(state)
         if hasattr(self, 'viewall_window'):
             self.viewall_window.update_checkbox_state(key, bool(state))
 
     def on_clip_checkbox_changed_from_viewall(self, key, state):
         # viewall에서 체크박스 변경 시 메인에도 반영
-        self.clip_check_state[key] = bool(state)
+        self.clip_check_state[key[0]] = bool(state)
         for w in getattr(self, 'clip_widgets', []):
             if (w.start_time, w.end_time) == key:
                 w.checkbox.setChecked(bool(state))
@@ -263,8 +263,9 @@ class MainWindow(QMainWindow):
 # 영상 출력부
 class VideoPlayerHandler(QObject):
     load_video = Signal(bool)
+    on_make_clip_state_dic = Signal(str)
 
-    def __init__(self, parent: QWidget, ui: Variable, path, skipFrame):
+    def __init__(self, parent: QWidget, ui, path, skipFrame):
         super().__init__(parent)
         self.parent = parent
         self.ui = ui
@@ -366,10 +367,11 @@ class VideoPlayerHandler(QObject):
                 self.player.set_hwnd(int(self.video_widget.winId()))
             except Exception as e:
                 print(f"Failed to set video widget: {e}")
-
-            self.player.play()
-            self.timer.start()
+                
             self.emit_load_video()
+            self.timer.start()
+            self.player.play()
+            QTimer.singleShot(200, self.player.pause)
         else:
             return
 
