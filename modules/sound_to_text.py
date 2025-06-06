@@ -22,24 +22,21 @@ def write_srt(segments, file):
         file.write(f"{start} --> {end}\n")
         file.write(f"{text}\n\n")
 
-def transcribe_to_srt(audio_path, model_size="base"):
+def transcribe_to_srt(audio_path, srt_path, model_size="base"):
     
     model = whisper.load_model(model_size)
     print("모델 로딩 완료.")
 
     result = model.transcribe(audio_path, verbose=True, language="ko")
-    
-    base_name = os.path.splitext(audio_path)[0]
-    srt_path = base_name + ".srt"
 
     with open(srt_path, "w", encoding="utf-8") as srt_file:
         write_srt(result["segments"], file=srt_file)
 
     print(f"SRT 자막 저장 완료: {srt_path}")
 
-def start(file_name, model='base'):
+def start(file_name1, file_name2, model='base'):
     print("Transcribe to text file")
-    transcribe_to_srt(file_name, model)
+    transcribe_to_srt(file_name1, file_name2, model)
     print("Complete to transcribe to text file")
 
 if __name__ == "__main__":
