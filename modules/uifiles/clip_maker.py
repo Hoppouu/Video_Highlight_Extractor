@@ -34,20 +34,55 @@ class ClipMaker():
         clip.close()
 
 
+# class ThumbnailMaker:
+#     @staticmethod
+#     def from_video(video_path, fps, start_time):
+#         cap = cv2.VideoCapture(video_path)
+#         cap.set(cv2.CAP_PROP_POS_FRAMES, fps * time_to_sec(start_time))
+#         ret, frame = cap.read()
+#         cap.release()
+
+#         if not ret:
+#             return None
+
+#         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#         h, w, ch = rgb.shape
+#         bytes_per_line = ch * w
+#         qimg = QImage(rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
+#         return QPixmap.fromImage(qimg)
+
 class ThumbnailMaker:
     @staticmethod
-    def from_video(video_path, fps, start_time):
+    def from_video(
+        video_path,
+        fps,
+        start_time,
+        crop_size=(360, 360),
+        save_base_path="thumbnail",  # 확장자 없이 기본 경로
+        index=0                      # 숫자 인덱스 추가
+    ):
         cap = cv2.VideoCapture(video_path)
         cap.set(cv2.CAP_PROP_POS_FRAMES, fps * time_to_sec(start_time))
         ret, frame = cap.read()
         cap.release()
 
         if not ret:
-            return None
+            print(f"[{index}] 썸네일 추출 실패")
+            return
 
+        # BGR → RGB
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        h, w, ch = rgb.shape
-        bytes_per_line = ch * w
-        qimg = QImage(rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
-        return QPixmap.fromImage(qimg)
 
+        # 중앙 crop
+        h, w, _ = rgb.shape
+        crop_w, crop_h = crop_size
+        start_x = max((w - crop_w) // 2, 0)
+        start_y = max((h - crop_h) // 2, 0)
+        cropped = rgb[start_y:start_y+crop_h, start_x:start_x+crop_w]
+
+        # 저장 경로 생성
+        save_path = f"{save_base_path}_{index}.jpg"
+
+        # 저장
+        cv2.imwrite(save_path, cv2.cvtColor(cropped, cv2.COLOR_RGB2BGR))
+        print(f"[{index}] 썸네일 저장 완료: {save_path}")

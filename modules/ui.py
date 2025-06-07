@@ -15,7 +15,7 @@ from modules.uifiles.ui_main import Ui_MainWindow
 from modules.uifiles.option import UiOption
 from modules.uifiles.viewall import UiForm
 from modules.uifiles.dragger import WindowDragger
-from modules.uifiles.clip_maker import ClipMaker
+from modules.uifiles.clip_maker import ClipMaker, ThumbnailMaker
 from modules.uifiles.utils import time_to_sec, sec_to_time
 
 # 압축 파일 경로
@@ -43,8 +43,6 @@ vlc_base_path = setup_vlc_environment()
 
 import vlc
 
-llm_output = ""
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -56,9 +54,6 @@ class MainWindow(QMainWindow):
         self.startPoint = -30 # 클립 시작 위치, 받은 결과에서 사용자가 조절용
         self.clipLength = 60    # 클립 길이
         self.skipFrame = 3  # 움직일 프레임 크기
-    
-        # 타임라인 데이터 예시
-        self.timeline_data = utils.dic_to_ui_dic(llm_output)
 
         #영상 출력 핸들러
         self.video_hander = VideoPlayerHandler(self, self.ui, self.path, self.skipFrame)
@@ -99,34 +94,23 @@ class MainWindow(QMainWindow):
 
     def make_clip_state(self, path):
         # 타임라인 데이터 예시
-        self.timeline_data = [
-                    {"start_time": "00:00:01", "description": "바루스가 킬"},
-                    {"start_time": "00:00:05", "description": "킬을 못 먹었어야 했는데"},
-                    {"start_time": "00:00:08", "description": "다킬 언급"},
-                    {"start_time": "00:00:12", "description": '"나 킬!" 반복'},
-                    {"start_time": "00:00:16", "description": "타워 들고 다니는 장면"},
-                    {"start_time": "00:00:23", "description": "타워 들고 다니는 장면"},
-                    {"start_time": "00:00:36", "description": "타워 들고 다니는 장면"},
-                    {"start_time": "00:00:50", "description": "바루스가 킬"},
-                    {"start_time": "00:01:16", "description": "킬을 못 먹었어야 했는데"},
-                    {"start_time": "00:01:51", "description": "다킬 언급"},
-                    {"start_time": "00:02:35", "description": '"나 킬!" 반복'},
-                    {"start_time": "00:02:59", "description": "타워 들고 다니는 장면"},
-                    {"start_time": "00:03:27", "description": "타워 들고 다니는 장면"},
-                    {"start_time": "00:04:01", "description": "타워 들고 다니는 장면"},
-                ]
-
+        self.timeline_data = utils.dic_to_ui_dic(path)
+        index = 0
         # 체크 상태를 저장할 딕셔너리 (key: (start, end), value: bool)
         self.clip_check_state = {}
         for clip in self.timeline_data:
             key = (clip["start_time"])
             self.clip_check_state[key] = False
+            #====================================================================================
+            ThumbnailMaker.from_video(self.path, self.fps, clip["start_time"], index=index)
+            index = index + 1
 
     def on_load_video(self, on):
         if on:
             self.populate_main_clip_list(self.timeline_data)
 
     def populate_main_clip_list(self, timeline_data):
+        index = 0
         layout = self.ui.verticalLayout_2
         while layout.count():
             item = layout.takeAt(0)
@@ -148,7 +132,9 @@ class MainWindow(QMainWindow):
                 start_time=clip["start_time"],
                 end_time=end_time,
                 description=clip.get("description", ""),
-                show_description=True  # 설명 표시
+                show_description=True,  # 설명 표시
+                # =========================
+                thumbnail_index = index
             )
             # 체크박스 상태 동기화
             clip_widget.checkbox.setChecked(self.clip_check_state.get(key, False))
@@ -160,6 +146,7 @@ class MainWindow(QMainWindow):
 
             layout.addStretch()
             self.resize_clip_widgets()
+            index = index + 1
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
@@ -306,10 +293,11 @@ class VideoPlayerHandler(QObject):
         ui.volumeSpinBox.valueChanged.connect(self.set_volume)
         ui.volumeBar.valueChanged.connect(ui.volumeSpinBox.setValue)
 
+        ui.start_ai.clicked.connect(self.start_ai)
 
     def start_ai(self):
         llm_output = assemble.start(self.path)
-        self.timeline_data = utils.dic_to_ui_dic(llm_output)
+        self.on_make_clip_state_dic.emit(llm_output)
         
     # 소리 뮤트
     def toggle_mute(self):
@@ -380,7 +368,7 @@ class VideoPlayerHandler(QObject):
                 self.player.set_hwnd(int(self.video_widget.winId()))
             except Exception as e:
                 print(f"Failed to set video widget: {e}")
-                
+            
             self.emit_load_video()
             self.timer.start()
             self.player.play()

@@ -9,26 +9,39 @@ class ClipWidget(QWidget):
     # 시작 및 끝 시간을 전달하는 신호 정의
     time_selected = Signal(str)
 
-    def __init__(self, video_path, fps, start_time, end_time, description="", show_description=True, parent=None):
+    def __init__(self, video_path, fps, start_time, end_time, description="", show_description=True,thumbnail_index=0, parent=None):
         super().__init__(parent)
         self.start_time = start_time
         self.end_time = end_time
         #self.setFixedSize(250, 175)  # 위젯 크기 설정
         self.setStyleSheet("background-color: #272727; border-radius: 8px;")
 
-        # 썸네일 이미지
+# ================================================================
         self.thumbnail_label = QLabel(self)
-        pixmap = ThumbnailMaker.from_video(video_path, fps, start_time)
-        
-        if not pixmap:
-            # 현재 파일의 경로를 기준으로 상대 경로 설정
-            current_dir = os.path.dirname(__file__)
-            fallback_path = os.path.join(current_dir, "none_image.png")
 
-            if os.path.exists(fallback_path):
-                pixmap = QPixmap(fallback_path)
-            else:
-                pixmap = QPixmap()  # or 빈 픽스맵으로 예외 방지
+        current_dir = "" #파일 경로
+        thumbnail_path = os.path.join(current_dir, f"{thumbnail_index}.jpg")
+
+        if os.path.exists(thumbnail_path):
+            pixmap = QPixmap(thumbnail_path)
+        else:
+            # 대체 이미지 경로
+            fallback_path = os.path.join(current_dir, "none_image.png")
+            pixmap = QPixmap(fallback_path) if os.path.exists(fallback_path) else QPixmap()
+
+        # # 썸네일 이미지
+        # self.thumbnail_label = QLabel(self)
+        # pixmap = ThumbnailMaker.from_video(video_path, fps, start_time)
+
+        # if not pixmap:
+        #     # 현재 파일의 경로를 기준으로 상대 경로 설정
+        #     current_dir = os.path.dirname(__file__)
+        #     fallback_path = os.path.join(current_dir, "none_image.png")
+
+        #     if os.path.exists(fallback_path):
+        #         pixmap = QPixmap(fallback_path)
+        #     else:
+        #         pixmap = QPixmap()  # or 빈 픽스맵으로 예외 방지
 
         self.thumbnail_label.setPixmap(pixmap.scaled(230, 100, Qt.KeepAspectRatio, Qt.SmoothTransformation))
         self.thumbnail_label.setAlignment(Qt.AlignCenter)

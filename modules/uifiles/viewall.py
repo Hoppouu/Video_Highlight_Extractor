@@ -44,7 +44,7 @@ class UiForm(QDialog):
 
     def populate_clip_list(self, timeline_data):
         columns = 3
-
+        index = 0
         # 동영상이 로드되지 않았으면 클립 생성하지 않음
         if not self.player or self.player.get_length() <= 0:
             return
@@ -59,7 +59,9 @@ class UiForm(QDialog):
                 fps=self.fps,
                 start_time=clip["start_time"],
                 end_time=self.end_time,
-                show_description=False
+                show_description=False,
+                # =========================
+                thumbnail_index = index
             )
             clip_widget.time_selected.connect(self.seek_video_to_time)
             clip_widget.checkbox.setChecked(self.check_state.get(key[0], False))
@@ -68,6 +70,7 @@ class UiForm(QDialog):
             row = index // columns
             column = index % columns
             self.ui.gridLayout.addWidget(clip_widget, row, column)
+            index = index + 1
 
     def update_checkbox_state(self, key, state):
         for w in self.clip_widgets:
