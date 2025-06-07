@@ -13,11 +13,15 @@ def format_srt_timestamp(seconds: float) -> str:
     return f"{hours:02}:{minutes:02}:{seconds:02},{milliseconds:03}"
 
 def write_srt(segments, file):
+    print("debug start")
+    print()
     for i, segment in enumerate(segments, start=1):
         start = format_srt_timestamp(segment['start'])
         end = format_srt_timestamp(segment['end'])
         text = segment['text'].strip()
-
+        print(start)
+        print(end)
+        print(text)
         file.write(f"{i}\n")
         file.write(f"{start} --> {end}\n")
         file.write(f"{text}\n\n")
@@ -26,18 +30,18 @@ def transcribe_to_srt(audio_path, srt_path, model_size="base"):
     
     model = whisper.load_model(model_size)
     print("모델 로딩 완료.")
-
     result = model.transcribe(audio_path, verbose=True, language="ko")
-
+    print(result["segments"])
     with open(srt_path, "w", encoding="utf-8") as srt_file:
         write_srt(result["segments"], file=srt_file)
 
     print(f"SRT 자막 저장 완료: {srt_path}")
 
 def start(file_name1, file_name2, model='base'):
-    print("Transcribe to text file")
+    print("Transcribe to text file:")
+    
     transcribe_to_srt(file_name1, file_name2, model)
-    print("Complete to transcribe to text file")
+    print("Complete to transcribe to text file:")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Whisper로 SRT 자막 생성기")

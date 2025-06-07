@@ -4,8 +4,7 @@ from dotenv import load_dotenv, find_dotenv
 from openai import OpenAI
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from modules import text_divide
-from modules import utils
+from modules import text_divide, utils
 
 _ = load_dotenv(find_dotenv())
 client = OpenAI(
@@ -14,12 +13,12 @@ client = OpenAI(
 
 #쿼리를 생성해서 보내고 gpt의 응답을 반환한다.
 def create_chat_completion(system_input, user_input, model="gpt-4o-mini", temperature=1.15, max_tokens=150):
-    try:
+    try:    
         messages = [
             {"role": "system", "content": system_input},
             {"role": "user", "content": user_input}
-        ]
-
+        ]                   
+                                      
         response = client.chat.completions.create(
             model=model,
             messages=messages,
@@ -30,10 +29,9 @@ def create_chat_completion(system_input, user_input, model="gpt-4o-mini", temper
     except Exception as e:
         return f"Error: {str(e)}"
 
-def call(file_name):
+def call(srt_path, llm_output):
     #자막파일 불러오기
-    file_path = file_name 
-    subtitles = utils.ead_srt_file(file_path)
+    subtitles = utils.read_srt_file(srt_path)
 
     for subtitle in subtitles:
         print(subtitle)
@@ -50,7 +48,8 @@ def call(file_name):
     주로 게임에서 전투가 발생하거나, 누가 위험하거나, 죽거나 하는 부분을 중심으로 골라줘.
     출력 양식은 [시간대] : [내용]으로 해줘. 이유는 설명하지마.
     """
-    chunks = text_divide.split_text_into_chunks(file_path="sample.srt")
+    
+    chunks = text_divide.split_text_into_chunks(file_path=srt_path)
     responses_dict = {}
     for i, chunk in enumerate(chunks):
         print(str(i + 1) + "/"+ str(len(chunks)))
@@ -67,7 +66,10 @@ def call(file_name):
 
     for time, text in responses_dict.items():
         print(f"{time}: {text}")
-
+    
     with open("final.txt", "w", encoding="utf-8") as f:
         for time, text in responses_dict.items():
             f.write(f"{time} : {text}\n")
+            
+
+call()

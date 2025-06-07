@@ -344,21 +344,20 @@ class Ui_MainWindow(object):
         self.volumeSpinBox.setValue(100)
 
         self.playFrame.addWidget(self.volumeSpinBox)
-
         self.start_ai = QPushButton(self.centralwidget)
         self.start_ai.setObjectName(u"start_ai")
         self.start_ai.setStyleSheet(u"QPushButton {\n"
-"	border: none;\n"
-"	background-color: rgb(41, 41, 41);\n"
-"	border-radius: 3px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #494949;\n"
-"    color: white;  \n"
-"    border: 2px solid #595959; \n"
-"}")
-
+        "    border: none;\n"
+        "    background-color: rgb(41, 41, 41);\n"
+        "    border-radius: 3px;\n"
+        "}\n"
+        "\n"
+        "QPushButton:hover {\n"
+        "    background-color: #494949;\n"
+        "    color: white;  \n"
+        "    border: 2px solid #595959; \n"
+        "}")
+        self.playFrame.addWidget(self.start_ai )
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.playFrame.addItem(self.horizontalSpacer_2)

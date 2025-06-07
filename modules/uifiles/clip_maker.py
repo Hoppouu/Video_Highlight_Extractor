@@ -3,8 +3,8 @@ import os
 from PySide6.QtGui import QImage, QPixmap
 import cv2
 from moviepy import VideoFileClip
-
 from modules.uifiles.utils import time_to_sec
+from modules import constants
 
 class ClipMaker():
     def __init__(self, path, startPoint, clipLength, clip_check_state, out_path):
@@ -53,14 +53,8 @@ class ClipMaker():
 
 class ThumbnailMaker:
     @staticmethod
-    def from_video(
-        video_path,
-        fps,
-        start_time,
-        crop_size=(360, 360),
+    def from_video(video_path, fps, start_time, index):
         save_base_path="thumbnail",  # 확장자 없이 기본 경로
-        index=0                      # 숫자 인덱스 추가
-    ):
         cap = cv2.VideoCapture(video_path)
         cap.set(cv2.CAP_PROP_POS_FRAMES, fps * time_to_sec(start_time))
         ret, frame = cap.read()
@@ -72,17 +66,14 @@ class ThumbnailMaker:
 
         # BGR → RGB
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        # 중앙 crop
-        h, w, _ = rgb.shape
-        crop_w, crop_h = crop_size
-        start_x = max((w - crop_w) // 2, 0)
-        start_y = max((h - crop_h) // 2, 0)
-        cropped = rgb[start_y:start_y+crop_h, start_x:start_x+crop_w]
+        h, w, ch = rgb.shape
 
         # 저장 경로 생성
-        save_path = f"{save_base_path}_{index}.jpg"
-
+        save_path = f"{constants.file_path_images}/{index}.jpg"
         # 저장
-        cv2.imwrite(save_path, cv2.cvtColor(cropped, cv2.COLOR_RGB2BGR))
-        print(f"[{index}] 썸네일 저장 완료: {save_path}")
+        success = cv2.imwrite(save_path, cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+        if success:
+            print(f"[{index}] 썸네일 저장 완료: {save_path}")
+            index = index + 1
+        else:
+            print(f"이미지 저장 실패: {save_path}")

@@ -59,6 +59,12 @@ class MainWindow(QMainWindow):
         self.video_hander = VideoPlayerHandler(self, self.ui, self.path, self.skipFrame)
         self.ui.videoPlayer.mousePressEvent = self.on_video_click
         self.video_hander.load_video.connect(self.on_load_video)
+        self.video_hander.on_make_clip_state_dic.connect(self.make_clip_state)
+                
+        self.clip_check_state = {}
+        for clip in self.timeline_data:
+            key = (clip["start_time"])
+            self.clip_check_state[key] = False
 
         #윈도우 프레임 제거
         self.setWindowFlag(Qt.FramelessWindowHint)
@@ -81,8 +87,6 @@ class MainWindow(QMainWindow):
             self.ui.rightPanel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # clipList가 들어있는 레이아웃이 있다면 stretch도 강제 적용
-        if hasattr(self.ui, "rightLayout"):
-            self.ui.rightLayout.setStretchFactor(self.ui.clipList, 1)
 
         self.ui.optionButton.clicked.connect(self.open_option)
 
@@ -91,20 +95,21 @@ class MainWindow(QMainWindow):
         #스페이스바는 keyPressEvent에서만 동작하도록 QPushButton이 포커스 없앰. 
         #재생 상태에 따라 아이콘 변경되게 했더니 스페이스바로 조작시 두번 실행되는 오류 수정
         self.ui.playVideoButton.setFocusPolicy(Qt.NoFocus) 
-
+    
+    
     def make_clip_state(self, path):
         # 타임라인 데이터 예시
+        print("aa=================================================")
+        
         self.timeline_data = utils.dic_to_ui_dic(path)
-        index = 0
+        print("aa=================================================")
+        
         # 체크 상태를 저장할 딕셔너리 (key: (start, end), value: bool)
         self.clip_check_state = {}
         for clip in self.timeline_data:
             key = (clip["start_time"])
             self.clip_check_state[key] = False
-            #====================================================================================
-            ThumbnailMaker.from_video(self.path, self.fps, clip["start_time"], index=index)
-            index = index + 1
-
+        
     def on_load_video(self, on):
         if on:
             self.populate_main_clip_list(self.timeline_data)
@@ -286,10 +291,11 @@ class VideoPlayerHandler(QObject):
         ui.skipForwardButton.clicked.connect(self.next_frame)
         ui.skipBackwardButton.clicked.connect(self.prev_frame)
         ui.playSpeedDoubleSpinBox.valueChanged.connect(self.set_playback_speed)
+        ui.start_ai.clicked.connect(self.start_ai)
 
         # 영상 소리 조작
-        #ui.toggleMuteButton.clicked.connect(self.toggle_mute)
-        ui.toggleMuteButton.clicked.connect(self.start_ai)
+        ui.toggleMuteButton.clicked.connect(self.toggle_mute)
+        # ui.toggleMuteButton.clicked.connect(self.start_ai)
         ui.volumeSpinBox.valueChanged.connect(self.set_volume)
         ui.volumeBar.valueChanged.connect(ui.volumeSpinBox.setValue)
 
@@ -298,6 +304,7 @@ class VideoPlayerHandler(QObject):
     def start_ai(self):
         llm_output = assemble.start(self.path)
         self.on_make_clip_state_dic.emit(llm_output)
+        self.emit_load_video()
         
     # 소리 뮤트
     def toggle_mute(self):
@@ -369,7 +376,8 @@ class VideoPlayerHandler(QObject):
             except Exception as e:
                 print(f"Failed to set video widget: {e}")
             
-            self.emit_load_video()
+            # self.start_ai()
+            # self.emit_load_video()
             self.timer.start()
             self.player.play()
             QTimer.singleShot(200, self.player.pause)
