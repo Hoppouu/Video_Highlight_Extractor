@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QCheckB
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt, Signal
 
+from modules import constants
 from modules.uifiles.clip_maker import ThumbnailMaker
 
 class ClipWidget(QWidget):
@@ -19,7 +20,7 @@ class ClipWidget(QWidget):
 # ================================================================
         self.thumbnail_label = QLabel(self)
 
-        current_dir = "" #파일 경로
+        current_dir = constants.file_path_images #파일 경로
         thumbnail_path = os.path.join(current_dir, f"{thumbnail_index}.jpg")
 
         if os.path.exists(thumbnail_path):

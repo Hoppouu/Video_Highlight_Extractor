@@ -176,3 +176,4 @@ cython_debug/
 *.webm
 *.txt
 *.mp3
+*.jpg

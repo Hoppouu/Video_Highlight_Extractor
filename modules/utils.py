@@ -1,6 +1,5 @@
 def dic_to_ui_dic(file_path: str) -> list:
     timeline_data = []
-    print(file_path+"=============================================================================================================")
     if(file_path == ""):
         return
     

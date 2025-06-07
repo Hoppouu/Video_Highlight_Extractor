@@ -20,9 +20,9 @@ def start(file_path: str):
         f3 = constants.file_path_llm_outputs + make_filename(file_name, "txt")
         # sound_to_text.start(f1, f2, model='medium')
         # api_call.call(f2, f3)
-        # api_call.call("abc.srt", "final.txt")
+        # api_call.call(f2, f3)
 
-        return "./final.txt"
+        return f3
     except Exception as e:
         print(f"오류 발생: {e}")
         return ""

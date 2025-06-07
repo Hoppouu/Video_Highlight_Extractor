@@ -67,9 +67,6 @@ def call(srt_path, llm_output):
     for time, text in responses_dict.items():
         print(f"{time}: {text}")
     
-    with open("final.txt", "w", encoding="utf-8") as f:
+    with open(llm_output, "w", encoding="utf-8") as f:
         for time, text in responses_dict.items():
             f.write(f"{time} : {text}\n")
-            
-
-call()

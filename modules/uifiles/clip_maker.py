@@ -64,16 +64,15 @@ class ThumbnailMaker:
             print(f"[{index}] 썸네일 추출 실패")
             return
 
-        # BGR → RGB
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb.shape
-
-        # 저장 경로 생성
+        bytes_per_line = ch * w
+        qimg = QImage(rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
         save_path = f"{constants.file_path_images}/{index}.jpg"
-        # 저장
-        success = cv2.imwrite(save_path, cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
-        if success:
+        saved = qimg.save(save_path)
+        
+        # 저장 경로 생성
+        if saved:
             print(f"[{index}] 썸네일 저장 완료: {save_path}")
-            index = index + 1
         else:
             print(f"이미지 저장 실패: {save_path}")

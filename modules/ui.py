@@ -6,10 +6,10 @@ import cv2
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QFileDialog, QSlider, QSizePolicy
 from PySide6.QtCore import Qt, QObject, QEvent, QTimer, Signal
-from modules import utils, assemble
 # 프로젝트 루트(두 단계의 상위 폴더)의 절대 경로를 sys.path 최상단에 추가
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from modules import utils, assemble
 from modules.uifiles.ClipWidget import ClipWidget
 from modules.uifiles.ui_main import Ui_MainWindow
 from modules.uifiles.option import UiOption
@@ -60,11 +60,6 @@ class MainWindow(QMainWindow):
         self.ui.videoPlayer.mousePressEvent = self.on_video_click
         self.video_hander.load_video.connect(self.on_load_video)
         self.video_hander.on_make_clip_state_dic.connect(self.make_clip_state)
-                
-        self.clip_check_state = {}
-        for clip in self.timeline_data:
-            key = (clip["start_time"])
-            self.clip_check_state[key] = False
 
         #윈도우 프레임 제거
         self.setWindowFlag(Qt.FramelessWindowHint)
@@ -87,10 +82,10 @@ class MainWindow(QMainWindow):
             self.ui.rightPanel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         # clipList가 들어있는 레이아웃이 있다면 stretch도 강제 적용
+        if hasattr(self.ui, "rightLayout"):
+            self.ui.rightLayout.setStretchFactor(self.ui.clipList, 1)
 
         self.ui.optionButton.clicked.connect(self.open_option)
-
-        self.video_hander.on_make_clip_state_dic.connect(self.make_clip_state)
 
         #스페이스바는 keyPressEvent에서만 동작하도록 QPushButton이 포커스 없앰. 
         #재생 상태에 따라 아이콘 변경되게 했더니 스페이스바로 조작시 두번 실행되는 오류 수정
@@ -99,16 +94,16 @@ class MainWindow(QMainWindow):
     
     def make_clip_state(self, path):
         # 타임라인 데이터 예시
-        print("aa=================================================")
-        
         self.timeline_data = utils.dic_to_ui_dic(path)
-        print("aa=================================================")
         
         # 체크 상태를 저장할 딕셔너리 (key: (start, end), value: bool)
         self.clip_check_state = {}
+        index = 0
         for clip in self.timeline_data:
             key = (clip["start_time"])
             self.clip_check_state[key] = False
+            ThumbnailMaker.from_video(self.video_hander.path, self.video_hander.fps, clip["start_time"], index=index)
+            index += 1
         
     def on_load_video(self, on):
         if on:
@@ -298,8 +293,6 @@ class VideoPlayerHandler(QObject):
         # ui.toggleMuteButton.clicked.connect(self.start_ai)
         ui.volumeSpinBox.valueChanged.connect(self.set_volume)
         ui.volumeBar.valueChanged.connect(ui.volumeSpinBox.setValue)
-
-        ui.start_ai.clicked.connect(self.start_ai)
 
     def start_ai(self):
         llm_output = assemble.start(self.path)
