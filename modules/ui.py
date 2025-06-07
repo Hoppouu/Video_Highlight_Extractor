@@ -43,7 +43,10 @@ vlc_base_path = setup_vlc_environment()
 
 import vlc
 
-llm_output = ""
+file_path_origin = "./result/"
+file_path_subtitle = file_path_origin + "subtitles/"
+file_path_llm_outputs = file_path_origin + "llm_outputs/"
+llm_output = file_path_llm_outputs + "abc.txt"
 
 class MainWindow(QMainWindow):
     def __init__(self):
