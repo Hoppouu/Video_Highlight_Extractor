@@ -43,11 +43,6 @@ vlc_base_path = setup_vlc_environment()
 
 import vlc
 
-file_path_origin = "./result/"
-file_path_subtitle = file_path_origin + "subtitles/"
-file_path_llm_outputs = file_path_origin + "llm_outputs/"
-llm_output = file_path_llm_outputs + "abc.txt"
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -59,21 +54,13 @@ class MainWindow(QMainWindow):
         self.startPoint = -30 # 클립 시작 위치, 받은 결과에서 사용자가 조절용
         self.clipLength = 60    # 클립 길이
         self.skipFrame = 3  # 움직일 프레임 크기
-    
-        # 타임라인 데이터 예시
-        self.timeline_data = utils.dic_to_ui_dic(llm_output)
-
+        
         #영상 출력 핸들러
         self.video_hander = VideoPlayerHandler(self, self.ui, self.path, self.skipFrame)
         self.ui.videoPlayer.mousePressEvent = self.on_video_click
         self.video_hander.load_video.connect(self.on_load_video)
-
-        # 체크 상태를 저장할 딕셔너리 (key: (start, end), value: bool)
-        self.clip_check_state = {}
-        for clip in self.timeline_data:
-            key = (clip["start_time"])
-            self.clip_check_state[key] = False
-
+        self.video_hander.on_make_clip_state_dic.connect(self.make_clip_state)
+                
         #윈도우 프레임 제거
         self.setWindowFlag(Qt.FramelessWindowHint)
         
@@ -103,6 +90,20 @@ class MainWindow(QMainWindow):
         #스페이스바는 keyPressEvent에서만 동작하도록 QPushButton이 포커스 없앰. 
         #재생 상태에 따라 아이콘 변경되게 했더니 스페이스바로 조작시 두번 실행되는 오류 수정
         self.ui.playVideoButton.setFocusPolicy(Qt.NoFocus) 
+    
+    
+    def make_clip_state(self, path):
+        # 타임라인 데이터 예시
+        print("aa=================================================")
+        
+        self.timeline_data = utils.dic_to_ui_dic(path)
+        print("aa=================================================")
+        
+        # 체크 상태를 저장할 딕셔너리 (key: (start, end), value: bool)
+        self.clip_check_state = {}
+        for clip in self.timeline_data:
+            key = (clip["start_time"])
+            self.clip_check_state[key] = False
         
     def on_load_video(self, on):
         if on:
@@ -251,7 +252,7 @@ class MainWindow(QMainWindow):
 # 영상 출력부
 class VideoPlayerHandler(QObject):
     load_video = Signal(bool)
-
+    on_make_clip_state_dic = Signal(str)
     def __init__(self, parent: QWidget, ui, path, skipFrame):
         super().__init__(parent)
         self.parent = parent
@@ -280,17 +281,19 @@ class VideoPlayerHandler(QObject):
         ui.skipForwardButton.clicked.connect(self.next_frame)
         ui.skipBackwardButton.clicked.connect(self.prev_frame)
         ui.playSpeedDoubleSpinBox.valueChanged.connect(self.set_playback_speed)
+        ui.start_ai.clicked.connect(self.start_ai)
 
         # 영상 소리 조작
-        #ui.toggleMuteButton.clicked.connect(self.toggle_mute)
-        ui.toggleMuteButton.clicked.connect(self.start_ai)
+        ui.toggleMuteButton.clicked.connect(self.toggle_mute)
+        # ui.toggleMuteButton.clicked.connect(self.start_ai)
         ui.volumeSpinBox.valueChanged.connect(self.set_volume)
         ui.volumeBar.valueChanged.connect(ui.volumeSpinBox.setValue)
 
 
     def start_ai(self):
         llm_output = assemble.start(self.path)
-        self.timeline_data = utils.dic_to_ui_dic(llm_output)
+        self.on_make_clip_state_dic.emit(llm_output)
+        self.emit_load_video()
         
     # 소리 뮤트
     def toggle_mute(self):
@@ -361,8 +364,9 @@ class VideoPlayerHandler(QObject):
                 self.player.set_hwnd(int(self.video_widget.winId()))
             except Exception as e:
                 print(f"Failed to set video widget: {e}")
-                
-            self.emit_load_video()
+            
+            # self.start_ai()
+            # self.emit_load_video()
             self.timer.start()
             self.player.play()
             QTimer.singleShot(200, self.player.pause)

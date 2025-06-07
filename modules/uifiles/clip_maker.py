@@ -3,15 +3,18 @@ import os
 from PySide6.QtGui import QImage, QPixmap
 import cv2
 from moviepy import VideoFileClip
-
 from modules.uifiles.utils import time_to_sec
+from modules import constants
+
+index = 0
 
 class ClipMaker():
     def __init__(self, path, startPoint, clipLength, clip_check_state, out_path):
         super(ClipMaker, self).__init__()
 
         clip = VideoFileClip(path)
-
+        global index
+        index = 0
         for start, checked in clip_check_state.items():
             if checked:
                 start_sec = max(0, time_to_sec(start) + startPoint)
@@ -34,20 +37,46 @@ class ClipMaker():
         clip.close()
 
 
+# class ThumbnailMaker:
+#     @staticmethod
+#     def from_video(video_path, fps, start_time):
+#         cap = cv2.VideoCapture(video_path)
+#         cap.set(cv2.CAP_PROP_POS_FRAMES, fps * time_to_sec(start_time))
+#         ret, frame = cap.read()
+#         cap.release()
+
+#         if not ret:
+#             return None
+
+#         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#         h, w, ch = rgb.shape
+#         bytes_per_line = ch * w
+#         qimg = QImage(rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
+#         return QPixmap.fromImage(qimg)
+
 class ThumbnailMaker:
     @staticmethod
     def from_video(video_path, fps, start_time):
+        global index
+        save_base_path="thumbnail",  # 확장자 없이 기본 경로
         cap = cv2.VideoCapture(video_path)
         cap.set(cv2.CAP_PROP_POS_FRAMES, fps * time_to_sec(start_time))
         ret, frame = cap.read()
         cap.release()
 
         if not ret:
-            return None
+            print(f"[{index}] 썸네일 추출 실패")
+            return
 
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         h, w, ch = rgb.shape
-        bytes_per_line = ch * w
-        qimg = QImage(rgb.data, w, h, bytes_per_line, QImage.Format_RGB888)
-        return QPixmap.fromImage(qimg)
 
+        # 저장 경로 생성
+        save_path = f"{constants.file_path_images}/{index}.jpg"
+        # 저장
+        success = cv2.imwrite(save_path, cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+        if success:
+            print(f"[{index}] 썸네일 저장 완료: {save_path}")
+            index = index + 1
+        else:
+            print(f"이미지 저장 실패: {save_path}")
