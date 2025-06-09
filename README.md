@@ -175,7 +175,7 @@ python main.py
 
 ## 프로그램 화면
 ### 메인 화면
-![111](https://github.com/user-attachments/assets/f759d4ec-e281-4ad2-b159-334748091b3c)
+![1](./assets/images/1.png)
  - A 공간은 동영상이 보여지는 공간입니다. A 공간을 클릭하여 동영상을 불러올 수 있습니다.
  - B 공간은 추출된 영상 클립이 보여지는 공간입니다.
  - C 공간은 동영상 상태를 조작할 수 있습니다. 재생 정지, 소리 조절 등의 기능을 수행할 수 있습니다.
@@ -185,33 +185,33 @@ python main.py
 <br><br>
 
 #### A 공간 클릭 시
-![2](https://github.com/user-attachments/assets/29652647-37fa-4c87-b75b-0f769d6b77c8)
+![2](./assets/images/2.png)
  - 영상 파일을 선택할 수 있는 디렉토리가 켜집니다.
 <br>
 
-![3](https://github.com/user-attachments/assets/d1bb00cb-d1e8-4c80-9e2c-31e7575e3e67)
+![3](./assets/images/3.png)
  - 영상 파일을 불러오고 난 뒤의 모습입니다.(동영상 화면은 자체적으로 가렸습니다. 원래는 정상적으로 보입니다)
 <br>
 
 #### B 공간
-![3](https://github.com/user-attachments/assets/02419627-ac28-4ee5-88b8-9d382c477757)
+![4](./assets/images/4.png)
  - D 버튼을 눌러서 추출하게 되면 이와 같이 오른쪽에 클립 리스트가 생성됩니다.
 <br>
 
 #### E 공간
-![4](https://github.com/user-attachments/assets/06ee5003-af21-4348-9890-5aed878cb13f)
+![5](./assets/images/5.png)
  - 영상 주소 탭을 눌러서 다른 영상을 불러오도록 할 수 있습니다.
  - E 버튼을 누를 시 위와 같은 화면이 뜹니다. 시작 지점, 추출 길이 오프셋을 정할 수 있으며 동영상을 움직일 때 이동 할 프레임을 설정 할 수 있습니다.
 <br>
 
 #### F 공간
-![5](https://github.com/user-attachments/assets/1b5e5d78-61ca-4773-82ba-d6600b675e5b)
+![6](./assets/images/6.png)
  - F 버튼을 누를 시 위와 같은 클립리스트가 팝업 됩니다.
  - 원하는 클립을 체크박스를 통해 선택할 수 있습니다.
  - 그 후 오른쪽 하단의 Video 버튼을 눌러서 다운로드를 진행합니다.
 <br>
 
-![5-1](https://github.com/user-attachments/assets/6b235e57-03b5-437d-acc4-376f2eef0085)
+![7](./assets/images/7.png)
  - 다운로드가 되고 있는 모습
 <br>
 
