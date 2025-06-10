@@ -8,6 +8,7 @@ openai-whisper
 openai
 opencv-python
 python-vlc
+cv2
 # pandas
 # numpy
 # librosa
