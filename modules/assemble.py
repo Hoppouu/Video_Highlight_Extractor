@@ -18,9 +18,8 @@ def start(file_path: str):
         f1 = file_path
         f2 = constants.file_path_subtitle + make_filename(file_name, "srt")
         f3 = constants.file_path_llm_outputs + make_filename(file_name, "txt")
-        # sound_to_text.start(f1, f2, model='medium')
-        # api_call.call(f2, f3)
-        # api_call.call(f2, f3)
+        sound_to_text.start(f1, f2, model='medium')
+        api_call.call(f2, f3)
 
         return f3
     except Exception as e:

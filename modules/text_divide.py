@@ -50,7 +50,7 @@ def generate_start_hints(text_length, step=2000):
     return hints
 
 # 5. 전체 실행
-def split_text_into_chunks(file_path, max_chunk_size=25000, step=8000):
+def split_text_into_chunks(file_path, max_chunk_size=4000, step=8000):
     with open(file_path, 'r', encoding='utf-8') as f:
         full_text = f.read()
 
