@@ -54,14 +54,20 @@ def get_dict(full_text):
 
     for line in lines:
         line = line.strip()
-        if line.startswith('[') and ']' in line:
-            end_idx = line.index(']')
-            timestamp_part = line[1:end_idx]
-            if len(timestamp_part) >= 8 and timestamp_part.count(':') == 2:
-                time_key = timestamp_part.split(',')[0]
-                rest = line[end_idx+1:].strip()
-                if rest.startswith(':'):
-                    rest = rest[1:].strip()
-                sentence = rest.strip('"')
-                subtitles[time_key] = sentence
+        if len(line) < 12: #너무 짧으면 건너 뛰기
+            continue
+
+        time_part = line[:12]
+        if time_part.count(':') == 2 and ',' in time_part:
+            time_key = time_part.split(',')[0]
+            rest = line[13:].strip()
+
+            parts = rest.split(':')
+            if len(parts) >= 2:
+                content = f"{parts[0].strip()} : {parts[1].strip()}"
+            else:
+                content = rest
+
+            subtitles[time_key] = content.strip('"')
     return subtitles
+
