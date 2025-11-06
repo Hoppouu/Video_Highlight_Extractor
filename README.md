@@ -27,11 +27,9 @@
 
 | 이름   | 학번      | 역할             | 담당 업무                        |
 |--------|-----------|------------------|----------------------------------|
-| [**나민수**](https://github.com/Hoppouu) | 20203255 | 💼 Project Leader, Backend| 프로그램 전반 기획 및 설계, 백엔드 기능 개발|
+| [**나민수**](https://github.com/Hoppouu) | 20203255 | 💼 Backend| 프로그램 전반 기획, 백엔드 기능 개발|
 | [**백승렬**](https://github.com/BulPa) | 20203237 | 🎨 Frontend      | 전체 GUI 구성 및 프론트엔드 아키텍처 개발|
 | [**박원빈**](https://github.com/wonbinnim) | 20203253 | 🎨 Frontend      | UI 디자인 및 화면 구성 요소 개발|
-| **김형우** | 20181584 | 💻 Backend       | text_divide 함수 구현|
-| **채지민** | 20213037 |         |   |
 
 <br><br><br>
 
